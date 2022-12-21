@@ -7,11 +7,13 @@ import CardMedia from '@mui/material/CardMedia'
 import Button from '@mui/material/Button'
 import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon'
 import Grid from '@mui/material/Grid'
+import SuccessAlert from './SuccessAlert'
 
 
 const Pokemon = () => {
     
     const [pokeData, setPokeData] = useState<any>({})
+    const [wasPressed, setWasPressed] = useState<string>('false')
 
     const fetchData = (newPokemon: boolean) => {
         let id = 0
@@ -33,7 +35,6 @@ const Pokemon = () => {
             }).catch((err) => {
                 console.log(err)
             })
-    
     }
 
     const getTimeNow = () => {
@@ -51,7 +52,29 @@ const Pokemon = () => {
         return time
     }
 
+    const likePokemon = () => {
+        axios.post('http://localhost:8080/pokemon', {
+            name: pokeData.name
+        })
+        .then(response => {
+            console.log(response.data)
+            setWasPressed('true')
+            localStorage.setItem("wasPressed", "true")
+            return (
+                <SuccessAlert />
+            )
+        })
+        .catch(error => {
+            console.error(error)
+        })
+    }
+
     useEffect(() => { 
+
+        if(localStorage?.getItem("wasPressed") !== null){
+            // @ts-ignore
+            setWasPressed(localStorage?.getItem("wasPressed"))
+        }
         let temp = getTimeLocalstorage()
         if(getTimeNow() >= temp){
             fetchData(true)
@@ -87,10 +110,12 @@ const Pokemon = () => {
                         </List>
                     </Grid>
                 </Grid>
-                <CardActionArea>
-                    <Button variant='contained'>Like</Button>
-                </CardActionArea>
-            </CardContent>
+                { wasPressed === 'false' &&
+                    <CardActionArea>
+                        <Button variant='contained' onClick={likePokemon}>Like</Button>
+                    </CardActionArea>
+                }
+                </CardContent>
         </Card>
     )
 }
