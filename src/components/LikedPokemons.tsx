@@ -1,6 +1,6 @@
 import {useState, useEffect} from "react";
 import axios from "axios";
-import {Button, Card, CardActionArea, CardContent, Grid, List, ListItem, ListItemIcon, ListItemText, Typography} from "@mui/material";
+import { Card, CardContent, Grid, List, ListItem, ListItemIcon, ListItemText, Typography} from "@mui/material";
 import CatchingPokemonIcon from "@mui/icons-material/CatchingPokemon";
 
 const LikedPokemons = () => {

@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/a9fe6e96-0cc6-41bc-8240-eb9d07d52dbe/AppServices/subscriptions/a9fe6e96-0cc6-41bc-8240-eb9d07d52dbe/resourceGroups/mashup-rg/providers/Microsoft.Web/sites/mashup-api",
+    "appService.deploySubpath": "build"
+}
