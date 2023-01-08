@@ -5,7 +5,12 @@ import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import CardMedia from '@mui/material/CardMedia'
 import Button from '@mui/material/Button'
-import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon'
+import LocalPoliceIcon from '@mui/icons-material/LocalPolice'
+import ShieldIcon from '@mui/icons-material/Shield'
+import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety'
+import DirectionsRunIcon from '@mui/icons-material/DirectionsRun'
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh'
+import GradeIcon from '@mui/icons-material/Grade'
 import Grid from '@mui/material/Grid'
 import SuccessAlert from './SuccessAlert'
 
@@ -105,7 +110,24 @@ const Pokemon = () => {
                             {pokeData.stats?.map((e: any, index: any) => (
                                 <ListItem key={index}>
                                     <ListItemIcon>
-                                        <CatchingPokemonIcon/>
+                                        { e.stat.name === 'hp' &&
+                                            <HealthAndSafetyIcon/>
+                                        }
+                                        { e.stat.name === 'defense' &&
+                                            <ShieldIcon/>
+                                        }
+                                        {e.stat.name === 'speed' &&
+                                            <DirectionsRunIcon/>
+                                        }
+                                        {e.stat.name === 'attack' &&
+                                            <PriorityHighIcon/>
+                                        }
+                                        {e.stat.name === 'special-attack' &&
+                                            <GradeIcon/>
+                                        }
+                                        {e.stat.name === 'special-defense' &&
+                                            <LocalPoliceIcon/>
+                                        }
                                     </ListItemIcon>
                                     <ListItemText>
                                         {e.stat.name + ': '+ e.base_stat}
