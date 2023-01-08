@@ -1,81 +1,82 @@
-import { Card, CardContent, CardMedia, Typography, Grid } from "@mui/material";
-import { useEffect, useState } from "react";
+import {Card, CardContent, CardMedia, Typography, Grid} from "@mui/material";
+import {useEffect, useState} from "react";
 import axios from "axios";
 import NearMeIcon from '@mui/icons-material/NearMe';
 
 function Weather() {
 
-  const [weatherData, setWeatherData] = useState<any>();
-  const [iconUrl, setIconUrl] = useState("");
-  const currentHour = new Date().getHours();
-  
-  const bgGradient = currentHour < 20 && currentHour > 6 ? 
-  {background: 'linear-gradient(135deg, rgba(0,110,255,0.9) 4%, rgba(0,200,255,0.9) 93%)', color: 'white'} :
-  {background: 'linear-gradient(135deg, rgba(29,29,56,0.9) 4%, rgba(42,31,119,0.9) 93%)', color: 'white'}
+    const [weatherData, setWeatherData] = useState<any>();
+    const [iconUrl, setIconUrl] = useState("");
+    const currentHour = new Date().getHours();
 
-  const key = "54ef179bfb2f63ef2afb82174444ec07";
+    const bgGradient = currentHour < 20 && currentHour > 6 ?
+        {background: 'linear-gradient(135deg, rgba(0,110,255,0.9) 4%, rgba(0,200,255,0.9) 93%)', color: 'white'} :
+        {background: 'linear-gradient(135deg, rgba(29,29,56,0.9) 4%, rgba(42,31,119,0.9) 93%)', color: 'white'}
 
-  const fetchData = async () => {
-    "geolocation" in navigator ? console.log("geolocation available") : console.log("gelocation unavailable");
-    
-    let lat = undefined;
-    let lon = undefined;
+    const key = "54ef179bfb2f63ef2afb82174444ec07";
 
-    navigator.geolocation.getCurrentPosition((pos) => {
-      const geoUrl = `https://api.openweathermap.org/geo/1.0/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&limit=5&appid=${key}`;
-      axios.get(geoUrl).then((resp) => {
-        const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${resp.data[0].name}&appid=${key}`;
-        axios.get(weatherUrl).then((resp) => {
-          setWeatherData(resp.data);
-        });
-      });
-    }) 
-  };
+    const fetchData = async () => {
+        "geolocation" in navigator ? console.log("geolocation available") : console.log("gelocation unavailable");
 
-  function getTempInC(tempInKelvin: number) {
-      return Math.round(tempInKelvin - 273);
-  };
+        let lat = undefined;
+        let lon = undefined;
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+        navigator.geolocation.getCurrentPosition((pos) => {
+            const geoUrl = `https://api.openweathermap.org/geo/1.0/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&limit=5&appid=${key}`;
+            axios.get(geoUrl).then((resp) => {
+                const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${resp.data[0].name}&appid=${key}`;
+                axios.get(weatherUrl).then((resp) => {
+                    setWeatherData(resp.data);
+                });
+            });
+        })
+    };
 
-  useEffect(() => {
-    if(weatherData !== undefined) {
-      console.log(weatherData);
-      setIconUrl(`https://openweathermap.org/img/wn/${weatherData?.weather[0].icon}.png`);
-    }
-  }, [weatherData]);
+    function getTempInC(tempInKelvin: number) {
+        return Math.round(tempInKelvin - 273);
+    };
 
-  useEffect(() => {
-    console.log(iconUrl);
-  },  [iconUrl]);
+    useEffect(() => {
+        fetchData();
+    }, []);
 
-  return (
-    <Card sx={bgGradient}>
-      <Grid container spacing={2} direction="row" justifyContent="center" alignItems="center">
-        <Grid item xs={6}>
-          <CardContent>
-            <Typography variant="body1">
-              {weatherData?.name}<NearMeIcon sx={{fontSize: 14}}/>
-            </Typography>
-            <Typography variant="h5" component="div">
-              {getTempInC(weatherData?.main.temp)}°
-            </Typography>
-          </CardContent>
-        </Grid>
+    useEffect(() => {
+        if (weatherData !== undefined) {
+            console.log(weatherData);
+            setIconUrl(`https://openweathermap.org/img/wn/${weatherData?.weather[0].icon}.png`);
+        }
+    }, [weatherData]);
 
-        <Grid item xs={6}>
-          <CardContent>
-            <CardMedia image={iconUrl} component="img" title="weather" sx={{ml: 'auto', height: 50, width: 50}}/>
-            <Typography variant="body2" sx={{ml: 8}}>
-                {getTempInC(weatherData?.main.temp_min)}° / {getTempInC(weatherData?.main.temp_max)}°
-            </Typography>
-          </CardContent>
-        </Grid>      
-      </Grid>
-    </Card>
-  );
+    useEffect(() => {
+        console.log(iconUrl);
+    }, [iconUrl]);
+
+    return (
+        <Card sx={bgGradient}>
+            <Grid container spacing={2} direction="row" justifyContent="center" alignItems="center">
+                <Grid item xs={6}>
+                    <CardContent>
+                        <Typography variant="body1">
+                            {weatherData?.name}<NearMeIcon sx={{fontSize: 14}}/>
+                        </Typography>
+                        <Typography variant="h5" component="div">
+                            {getTempInC(weatherData?.main.temp)}°
+                        </Typography>
+                    </CardContent>
+                </Grid>
+
+                <Grid item xs={6}>
+                    <CardContent>
+                        <CardMedia image={iconUrl} component="img" title="weather"
+                                   sx={{ml: 'auto', height: 50, width: 50}}/>
+                        <Typography variant="body2" sx={{ml: 8}}>
+                            {getTempInC(weatherData?.main.temp_min)}° / {getTempInC(weatherData?.main.temp_max)}°
+                        </Typography>
+                    </CardContent>
+                </Grid>
+            </Grid>
+        </Card>
+    );
 }
 
 export default Weather;

@@ -14,10 +14,10 @@ function App() {
           <Grid item xs={12}>
             <Weather/>
           </Grid>   
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <Pokemon/>
           </Grid> 
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <LikedPokemons/>
           </Grid>     
         </Grid>
