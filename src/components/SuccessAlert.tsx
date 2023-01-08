@@ -1,43 +1,31 @@
 import {useState} from 'react'
-import { Box, Collapse, IconButton, Alert, Button } from '@mui/material'
+import {IconButton, Alert, Dialog} from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 
 const SuccessAlert = () => {
 
-    const [open, setOpen] = useState<boolean>(false)
+    const [open, setOpen] = useState<boolean>(true)
 
 
     return (
-        <Box sx={{ width: '100%' }}>
-          <Collapse in={open}>
+        <Dialog open={open} sx={{width: "100%"}}>
             <Alert
-              action={
-                <IconButton
-                  aria-label="close"
-                  color="inherit"
-                  size="small"
-                  onClick={() => {
-                    setOpen(false)
-                  }}
-                >
-                  <CloseIcon fontSize="inherit" />
-                </IconButton>
-              }
-              sx={{ mb: 2 }}
+                action={
+                    <IconButton
+                        aria-label="close"
+                        color="inherit"
+                        size="large"
+                        onClick={() => {
+                            setOpen(false)
+                        }}
+                    >
+                        <CloseIcon fontSize="inherit"/>
+                    </IconButton>
+                }
             >
-              Close me!
+                Pokemon was liked!
             </Alert>
-          </Collapse>
-          <Button
-            disabled={open}
-            variant="outlined"
-            onClick={() => {
-              setOpen(true)
-            }}
-          >
-            Re-open
-          </Button>
-        </Box>
+        </Dialog>
     )
 }
 

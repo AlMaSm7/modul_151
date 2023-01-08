@@ -22,7 +22,7 @@ function Weather() {
     let lon = undefined;
 
     navigator.geolocation.getCurrentPosition((pos) => {
-      const geoUrl = `http://api.openweathermap.org/geo/1.0/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&limit=5&appid=${key}`;
+      const geoUrl = `https://api.openweathermap.org/geo/1.0/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&limit=5&appid=${key}`;
       axios.get(geoUrl).then((resp) => {
         const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${resp.data[0].name}&appid=${key}`;
         axios.get(weatherUrl).then((resp) => {
@@ -43,7 +43,7 @@ function Weather() {
   useEffect(() => {
     if(weatherData !== undefined) {
       console.log(weatherData);
-      setIconUrl(`http://openweathermap.org/img/wn/${weatherData?.weather[0].icon}.png`);
+      setIconUrl(`https://openweathermap.org/img/wn/${weatherData?.weather[0].icon}.png`);
     }
   }, [weatherData]);
 

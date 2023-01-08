@@ -14,12 +14,14 @@ const Pokemon = () => {
     
     const [pokeData, setPokeData] = useState<any>({})
     const [wasPressed, setWasPressed] = useState<string>('false')
+    const [success, setSuccess] = useState<boolean>(false)
 
     const fetchData = (newPokemon: boolean) => {
         let id = 0
         
         if(newPokemon){
             id = Math.floor(Math.random() * 905)
+            setWasPressed('false')
         }else{
             // @ts-ignore
             id = +localStorage?.getItem("pokeId")
@@ -53,18 +55,17 @@ const Pokemon = () => {
     }
 
     const likePokemon = () => {
-        axios.post('http://localhost:8080/pokemon', {
+        axios.post('https://mashup-pokeapi.azurewebsites.net/pokemon', {
             name: pokeData.name
         })
         .then(response => {
             console.log(response.data)
             setWasPressed('true')
+            setSuccess(true)
             localStorage.setItem("wasPressed", "true")
-            return (
-                <SuccessAlert />
-            )
         })
         .catch(error => {
+            setSuccess(false)
             console.error(error)
         })
     }
@@ -85,38 +86,43 @@ const Pokemon = () => {
     }, [])
     
     return (
-        <Card sx={{ maxWidth: 900}}>
-            <CardContent>
-                <Typography variant='h3'>Pokemon: {pokeData?.name}!</Typography>
-                <CardMedia
-                    sx={{objectFit: "contain"}}
-                    component="img"
-                    src={pokeData.sprites?.front_default}
-                    height='400'
-                />
-                <Grid container sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '0.3rem'}}>
-                    <Grid item>
-                        <List>
-                        {pokeData.stats?.map((e: any, index: any) => (
-                            <ListItem key={index}>
-                                <ListItemIcon>
-                                    <CatchingPokemonIcon/>
-                                </ListItemIcon>
-                                <ListItemText>
-                                    {e.stat.name + ': '+ e.base_stat}
-                                </ListItemText>
-                            </ListItem>
-                        ))}                    
-                        </List>
+        <>
+            { success &&
+                <SuccessAlert />
+            }
+            <Card sx={{ maxWidth: 900}}>
+                <CardContent>
+                    <Typography variant='h3'>Pokemon: {pokeData?.name}!</Typography>
+                    <CardMedia
+                        sx={{objectFit: "contain"}}
+                        component="img"
+                        src={pokeData.sprites?.front_default}
+                        height='400'
+                    />
+                    <Grid container sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '0.3rem'}}>
+                        <Grid item>
+                            <List>
+                            {pokeData.stats?.map((e: any, index: any) => (
+                                <ListItem key={index}>
+                                    <ListItemIcon>
+                                        <CatchingPokemonIcon/>
+                                    </ListItemIcon>
+                                    <ListItemText>
+                                        {e.stat.name + ': '+ e.base_stat}
+                                    </ListItemText>
+                                </ListItem>
+                            ))}
+                            </List>
+                        </Grid>
                     </Grid>
-                </Grid>
-                { wasPressed === 'false' &&
-                    <CardActionArea>
-                        <Button variant='contained' onClick={likePokemon}>Like</Button>
-                    </CardActionArea>
-                }
-                </CardContent>
-        </Card>
+                    { wasPressed === 'false' &&
+                        <CardActionArea>
+                            <Button variant='contained' onClick={likePokemon}>Like</Button>
+                        </CardActionArea>
+                    }
+                    </CardContent>
+            </Card>
+        </>
     )
 }
 
