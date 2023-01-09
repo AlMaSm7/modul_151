@@ -42,18 +42,20 @@ const LikedPokemons = () => {
                     <Grid item>
                         {isLoading ?
                             <CircularProgress/>
-                            : <List>
-                                {likedPokemons.map((e: any, index: any) => (
-                                    <ListItem key={index}>
-                                        <ListItemIcon>
-                                            <CatchingPokemonIcon/>
-                                        </ListItemIcon>
-                                        <ListItemText>
-                                            {e.name + ' was liked: ' + e.count + " times today!"}
-                                        </ListItemText>
-                                    </ListItem>
-                                ))}
-                            </List>
+                            : likedPokemons.length != 0 ?
+                                <List>
+                                    {likedPokemons.map((e: any, index: any) => (
+                                        <ListItem key={index}>
+                                            <ListItemIcon>
+                                                <CatchingPokemonIcon/>
+                                            </ListItemIcon>
+                                            <ListItemText>
+                                                {e.name + ' was liked: ' + e.count + " times today!"}
+                                            </ListItemText>
+                                        </ListItem>
+                                    ))}
+                                </List> :
+                                <Typography>No Pokemones liked today :(</Typography>
                         }
                     </Grid>
                 </Grid>
