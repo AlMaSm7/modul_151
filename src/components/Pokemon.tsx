@@ -25,20 +25,21 @@ const Pokemon = () => {
         let id = 0
         
         if(newPokemon){
-            id = Math.floor(Math.random() * 905)
+            id = Math.floor(Math.random() * 904 + 1)
+            localStorage.setItem("wasPressed", "false")
             setWasPressed('false')
         }else{
             // @ts-ignore
             id = +localStorage?.getItem("pokeId")
         }
-        console.log(id)
         axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`)
             .then((res) => {
                 setPokeData(res.data)
                 let date = Date.now()
                 let tmr = new Date(date)
+                tmr.setDate(tmr.getDate() + 1)
                 localStorage.setItem("pokeId", res.data.id)
-                localStorage.setItem("time", (tmr.getDate() + 1).toString())
+                localStorage.setItem("time", tmr.toISOString())
             }).catch((err) => {
                 console.log(err)
             })
@@ -47,14 +48,14 @@ const Pokemon = () => {
     const getTimeNow = () => {
         let time = Date.now()
         let toDate = new Date(time)
-        return +toDate.getDate()
+        return toDate
     }
 
     const getTimeLocalstorage = () => {
         let localStorageValue = localStorage?.getItem("time")
-        let time = 0
+        let time: Date | null  = null
         if(localStorageValue !== null){
-            time = +localStorageValue
+            time = new Date(localStorageValue)
         }
         return time
     }
@@ -64,7 +65,6 @@ const Pokemon = () => {
             name: pokeData.name
         })
         .then(response => {
-            console.log(response.data)
             setWasPressed('true')
             setSuccess(true)
             localStorage.setItem("wasPressed", "true")
@@ -80,14 +80,28 @@ const Pokemon = () => {
         if(localStorage?.getItem("wasPressed") !== null){
             // @ts-ignore
             setWasPressed(localStorage?.getItem("wasPressed"))
-        }
-        let temp = getTimeLocalstorage()
-        if(getTimeNow() >= temp){
-            fetchData(true)
         }else{
-            fetchData(false)
+            localStorage.setItem("wasPressed", "false")
         }
-        console.log(pokeData.stats)
+        let timeLocal = getTimeLocalstorage()
+        if (timeLocal !== null){
+            // @ts-ignore
+            if(getTimeNow().getFullYear() >= timeLocal?.getFullYear()){
+                if(getTimeNow().getMonth() >= timeLocal?.getMonth()){
+                    if(getTimeNow().getDay() > timeLocal?.getDay()){
+                        fetchData(true)
+                    }else{
+                        fetchData(false)
+                    }
+                }else{
+                    fetchData(false)
+                }
+            }else{
+                fetchData(false)
+            }
+        }else{
+            fetchData(true)
+        }
     }, [])
     
     return (
