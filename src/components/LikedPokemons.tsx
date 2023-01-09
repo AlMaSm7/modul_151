@@ -42,7 +42,7 @@ const LikedPokemons = () => {
                     <Grid item>
                         {isLoading ?
                             <CircularProgress/>
-                            : likedPokemons.length != 0 ?
+                            : likedPokemons.length !== 0 ?
                                 <List>
                                     {likedPokemons.map((e: any, index: any) => (
                                         <ListItem key={index}>
