@@ -14,13 +14,19 @@ function Weather() {
           background:
             "linear-gradient(135deg, rgba(0,110,255,0.9) 4%, rgba(0,200,255,0.9) 93%)",
           color: "white",
-          maxWidth: 500,
+          maxWidth: "auto",
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'center'
         }
       : {
           background:
             "linear-gradient(135deg, rgba(29,29,56,0.9) 4%, rgba(42,31,119,0.9) 93%)",
           color: "white",
-          maxWidth: 500,
+          maxWidth: "auto",
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'center'
         };
         
   const key = "54ef179bfb2f63ef2afb82174444ec07";
