@@ -16,14 +16,14 @@ import SuccessAlert from './SuccessAlert'
 
 
 const Pokemon = () => {
-    
+
     const [pokeData, setPokeData] = useState<any>({})
     const [wasPressed, setWasPressed] = useState<string>('false')
     const [success, setSuccess] = useState<boolean>(false)
 
     const fetchData = (newPokemon: boolean) => {
         let id = 0
-        
+
         if(newPokemon){
             id = Math.floor(Math.random() * 904 + 1)
             localStorage.setItem("wasPressed", "false")
@@ -41,8 +41,8 @@ const Pokemon = () => {
                 localStorage.setItem("pokeId", res.data.id)
                 localStorage.setItem("time", tmr.toISOString())
             }).catch((err) => {
-                console.log(err)
-            })
+            console.log(err)
+        })
     }
 
     const getTimeNow = () => {
@@ -64,18 +64,18 @@ const Pokemon = () => {
         axios.post('https://mashup-pokeapi.azurewebsites.net/pokemon', {
             name: pokeData.name
         })
-        .then(response => {
-            setWasPressed('true')
-            setSuccess(true)
-            localStorage.setItem("wasPressed", "true")
-        })
-        .catch(error => {
-            setSuccess(false)
-            console.error(error)
-        })
+            .then(response => {
+                setWasPressed('true')
+                setSuccess(true)
+                localStorage.setItem("wasPressed", "true")
+            })
+            .catch(error => {
+                setSuccess(false)
+                console.error(error)
+            })
     }
 
-    useEffect(() => { 
+    useEffect(() => {
 
         if(localStorage?.getItem("wasPressed") !== null){
             // @ts-ignore
@@ -103,13 +103,13 @@ const Pokemon = () => {
             fetchData(true)
         }
     }, [])
-    
+
     return (
         <>
             { success &&
                 <SuccessAlert />
             }
-            <Card sx={{ maxWidth: 900}}>
+            <Card sx={{ minWidth: '100%'}}>
                 <CardContent>
                     <Typography variant='h3'>Pokemon: {pokeData?.name}!</Typography>
                     <CardMedia
@@ -121,33 +121,33 @@ const Pokemon = () => {
                     <Grid container sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '0.3rem'}}>
                         <Grid item>
                             <List>
-                            {pokeData.stats?.map((e: any, index: any) => (
-                                <ListItem key={index}>
-                                    <ListItemIcon>
-                                        { e.stat.name === 'hp' &&
-                                            <HealthAndSafetyIcon/>
-                                        }
-                                        { e.stat.name === 'defense' &&
-                                            <ShieldIcon/>
-                                        }
-                                        {e.stat.name === 'speed' &&
-                                            <DirectionsRunIcon/>
-                                        }
-                                        {e.stat.name === 'attack' &&
-                                            <PriorityHighIcon/>
-                                        }
-                                        {e.stat.name === 'special-attack' &&
-                                            <GradeIcon/>
-                                        }
-                                        {e.stat.name === 'special-defense' &&
-                                            <LocalPoliceIcon/>
-                                        }
-                                    </ListItemIcon>
-                                    <ListItemText>
-                                        {e.stat.name + ': '+ e.base_stat}
-                                    </ListItemText>
-                                </ListItem>
-                            ))}
+                                {pokeData.stats?.map((e: any, index: any) => (
+                                    <ListItem key={index}>
+                                        <ListItemIcon>
+                                            { e.stat.name === 'hp' &&
+                                                <HealthAndSafetyIcon/>
+                                            }
+                                            { e.stat.name === 'defense' &&
+                                                <ShieldIcon/>
+                                            }
+                                            {e.stat.name === 'speed' &&
+                                                <DirectionsRunIcon/>
+                                            }
+                                            {e.stat.name === 'attack' &&
+                                                <PriorityHighIcon/>
+                                            }
+                                            {e.stat.name === 'special-attack' &&
+                                                <GradeIcon/>
+                                            }
+                                            {e.stat.name === 'special-defense' &&
+                                                <LocalPoliceIcon/>
+                                            }
+                                        </ListItemIcon>
+                                        <ListItemText>
+                                            {e.stat.name + ': '+ e.base_stat}
+                                        </ListItemText>
+                                    </ListItem>
+                                ))}
                             </List>
                         </Grid>
                     </Grid>
@@ -156,7 +156,7 @@ const Pokemon = () => {
                             <Button variant='contained' onClick={likePokemon}>Like</Button>
                         </CardActionArea>
                     }
-                    </CardContent>
+                </CardContent>
             </Card>
         </>
     )

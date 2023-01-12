@@ -34,7 +34,7 @@ const LikedPokemons = () => {
     }, [])
 
     return (
-        <Card sx={{maxWidth: 900}}>
+        <Card sx={{minWidth: '100%'}}>
             <CardContent>
                 <Typography variant='h3'>Here's a list of the top 10 liked Pokemons today!</Typography>
                 <Grid container
