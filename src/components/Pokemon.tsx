@@ -52,10 +52,11 @@ const Pokemon = () => {
     }
 
     const getTimeLocalstorage = () => {
-        let localStorageValue = localStorage?.getItem("time")
+        let localStorageValue = '2023-01-29T21:35:46.701Z'
         let time: Date | null  = null
         if(localStorageValue !== null){
             time = new Date(localStorageValue)
+            console.log(time.getDate())
         }
         return time
     }
@@ -88,7 +89,8 @@ const Pokemon = () => {
             // @ts-ignore
             if(getTimeNow().getFullYear() >= timeLocal?.getFullYear()){
                 if(getTimeNow().getMonth() >= timeLocal?.getMonth()){
-                    if(getTimeNow().getDay() > timeLocal?.getDay()){
+                    if(getTimeNow().getDate() > timeLocal?.getDate()){
+                        console.log(timeLocal?.getDate())
                         fetchData(true)
                     }else{
                         fetchData(false)
@@ -98,9 +100,11 @@ const Pokemon = () => {
                 }
             }else{
                 fetchData(false)
+                console.log("here")
             }
         }else{
             fetchData(true)
+            console.log("here")
         }
     }, [])
 
