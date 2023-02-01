@@ -91,10 +91,12 @@ const Pokemon = () => {
                 (getTimeNow().getFullYear() === timeLocal?.getFullYear() &&
                     getTimeNow().getMonth() >= timeLocal?.getMonth())) {
                 if (getTimeNow().getDate() >= timeLocal?.getDate()) {
-                    console.log("fhjhfajds: " +timeLocal?.getDate());
-                    fetchData(true);
+                    console.log("Date: " +timeLocal?.getDate());
+                    fetchData(true)
                 } else {
-                    fetchData(false);
+                    fetchData(false)
+                    console.log(timeLocal?.getDate())
+                    console.log("here")
                 }
             } else {
                 fetchData(false);
